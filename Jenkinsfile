@@ -3,7 +3,13 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                script {
+                    if (isUnix()) {
+                        sh 'mvn -B -DskipTests clean package'  // Linux/MacOS
+                    } else {
+                        bat 'mvn -B -DskipTests clean package'  // Windows
+                    }
+                }
             }
         }
     }
