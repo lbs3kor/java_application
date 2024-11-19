@@ -17,7 +17,18 @@ pipeline{
             }
          }
         
-        
+        stage('Example Stage') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'nohup my_command &'
+                    } else {
+                        bat 'start my_command'
+                    }
+                }
+            }
+        }
+
        stage('build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('sonarqube-9.2.2') {
