@@ -19,7 +19,7 @@ tools {
         
         stage('BUILD'){
             steps {
-                sh 'mvn clean install -DskipTests'
+                bat 'mvn clean install -DskipTests'
             }
             post {
                 success {
@@ -31,19 +31,19 @@ tools {
 
 	stage('UNIT TEST'){
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
 	stage('INTEGRATION TEST'){
             steps {
-                sh 'mvn verify -DskipUnitTests'
+                bat 'mvn verify -DskipUnitTests'
             }
         }
 		
         stage ('CODE ANALYSIS WITH CHECKSTYLE'){
             steps {
-                sh 'mvn checkstyle:checkstyle'
+                bat 'mvn checkstyle:checkstyle'
             }
             post {
                 success {
@@ -60,7 +60,7 @@ tools {
 
           steps {
             withSonarQubeEnv('sonar-pro') {
-               sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+               bat '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                    -Dsonar.projectName=vprofile-repo \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
