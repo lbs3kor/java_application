@@ -1,6 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-
 trigger:
 - main
 
@@ -8,5 +5,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- checkout: self  # Make sure to checkout the GitHub code
+
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
