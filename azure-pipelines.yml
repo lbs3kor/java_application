@@ -1,14 +1,33 @@
 trigger:
-- main
+  branches:
+    include:
+    - main
+    - master  # Include both main and master for compatibility
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- checkout: self  # Make sure to checkout the GitHub code
+- checkout: self
   fetchDepth: 0
+  clean: true  # This ensures a clean checkout
+  persistCredentials: true  # This allows Git commands to run after checkout
 
-- script: echo Hello, world!
-    echo "Listing files in repository:"
+# Verify what we've checked out
+- script: |
+    echo "Current Git status:"
+    git status
+    echo "Current branch and commit:"
+    git branch
+    git log -1
+    echo "Files in repository:"
     ls -la
-  displayName: 'List checked out files'
+    git remote -v
+    git fetch --all
+    git reset --hard origin/main
+    git status
+  displayName: 'Verify checkout'
+
+# Your actual build steps would go here
+- script: echo "Building files from commit $(Build.SourceVersion)"
+  displayName: 'Build step'
