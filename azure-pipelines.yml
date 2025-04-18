@@ -31,7 +31,7 @@ steps:
     
     # Add Azure DevOps repo as a remote (replace with your actual repo URL)
     echo "Adding Azure DevOps repo as remote..."
-    git remote add ado https://$(System.AccessToken)@dev.azure.com/lbs3kor/demo5/_git/demo5
+    git remote add ado https://$(System.AccessToken)@dev.azure.com/lbs3kor/_git/demo5
     
     # Push the current state to Azure DevOps
     echo "Pushing changes to Azure DevOps..."
