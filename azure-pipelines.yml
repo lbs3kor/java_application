@@ -6,6 +6,9 @@ pool:
 
 steps:
 - checkout: self  # Make sure to checkout the GitHub code
+  fetchDepth: 0
 
 - script: echo Hello, world!
-  displayName: 'Run a one-line script'
+    echo "Listing files in repository:"
+    ls -la
+  displayName: 'List checked out files'
