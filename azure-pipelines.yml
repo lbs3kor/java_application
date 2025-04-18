@@ -2,7 +2,7 @@ trigger:
   branches:
     include:
     - main
-    - master  # Include both main and master for compatibility
+    - master
 
 pool:
   vmImage: ubuntu-latest
@@ -10,10 +10,10 @@ pool:
 steps:
 - checkout: self
   fetchDepth: 0
-  clean: true  # This ensures a clean checkout
-  persistCredentials: true  # This allows Git commands to run after checkout
+  clean: true
+  persistCredentials: true
 
-# Verify what we've checked out
+# Verification step (keep this for debugging)
 - script: |
     echo "Current Git status:"
     git status
@@ -22,17 +22,24 @@ steps:
     git log -1
     echo "Files in repository:"
     ls -la
-    git remote -v
-    git fetch --all
-    git reset --hard origin/main
-    git status
-    echo "Files changed in this commit:"
-    git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion)
-    
-    echo "Content of changed files:"
-    git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) | xargs -I{} cat {}
   displayName: 'Verify checkout'
 
-# Your actual build steps would go here
+# This step syncs GitHub changes to Azure DevOps repo
+- script: |
+    git config --global user.email "pipeline@example.com"
+    git config --global user.name "Azure Pipeline"
+    
+    # Add Azure DevOps repo as a remote (replace with your actual repo URL)
+    echo "Adding Azure DevOps repo as remote..."
+    git remote add ado https://$(System.AccessToken)@dev.azure.com/lbs3kor/demo5/_git/demo5
+    
+    # Push the current state to Azure DevOps
+    echo "Pushing changes to Azure DevOps..."
+    git push ado HEAD:$(Build.SourceBranchName) -f
+  displayName: 'Sync to Azure DevOps Repository'
+  env:
+    System.AccessToken: $(System.AccessToken)
+
+# Your actual build steps
 - script: echo "Building files from commit $(Build.SourceVersion)"
   displayName: 'Build step'
