@@ -19,7 +19,7 @@ tools {
         
         stage('BUILD'){
             steps {
-                bat 'mvn clean install -DskipTests'
+                bat 'mvn clean install'
             }
             post {
                 success {
