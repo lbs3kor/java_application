@@ -26,6 +26,11 @@ steps:
     git fetch --all
     git reset --hard origin/main
     git status
+    echo "Files changed in this commit:"
+    git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion)
+    
+    echo "Content of changed files:"
+    git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) | xargs -I{} cat {}
   displayName: 'Verify checkout'
 
 # Your actual build steps would go here
