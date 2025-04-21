@@ -14,7 +14,7 @@ steps:
     git config --global user.name "lbs3kor"
 
     # Clone Azure DevOps Repo
-    git clone https://$(AZURE_PAT)@dev.azure.com/lbs3kor/demo5/_git/demo5-repo azure-repo
+    git clone https://$(AZURE_PAT)@dev.azure.com/lbs3kor/demo5/_git/demo5 azure-repo
 
     cd azure-repo
 
