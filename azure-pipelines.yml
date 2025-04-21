@@ -1,38 +1,29 @@
 trigger:
-  branches:
-    include:
-    - main
-    - master  # Include both main and master for compatibility
+- main  # or your GitHub branch
 
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  AZURE_PAT: $(azurePat)  # This will be passed as a secret variable
+
 steps:
 - checkout: self
-  fetchDepth: 0
-  clean: true  # This ensures a clean checkout
-  persistCredentials: true  # This allows Git commands to run after checkout
 
-# Verify what we've checked out
 - script: |
-    echo "Current Git status:"
-    git status
-    echo "Current branch and commit:"
-    git branch
-    git log -1
-    echo "Files in repository:"
-    ls -la
-    git remote -v
-    git fetch --all
-    git reset --hard origin/main
-    git status
-    echo "Files changed in this commit:"
-    git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion)
-    
-    echo "Content of changed files:"
-    git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion) | xargs -I{} cat {}
-  displayName: 'Verify checkout'
+    git config --global user.email "lbs3kor@bosch.com"
+    git config --global user.name "lbs3kor"
 
-# Your actual build steps would go here
-- script: echo "Building files from commit $(Build.SourceVersion)"
-  displayName: 'Build step'
+    # Clone the Azure DevOps Repo using PAT
+    git clone https://$(uDXSWtVGEJe7T0meK6tvhJsT4YJWLgtJsN6vhM0KsbHB68FQrJw9JQQJ99BDACAAAAAg9ApBAAASAZDO3wJx)@dev.azure.com/lbs3kor/demo5/_git/your-azure-repo azure-repo
+
+    cd azure-repo
+
+    # Pull latest from GitHub
+    git remote add github https://github.com/your-user/your-github-repo.git
+    git fetch github
+    git merge github/main --allow-unrelated-histories -m "Sync from GitHub"
+
+    # Push to Azure DevOps Repo
+    git push origin main
+  displayName: 'Sync GitHub to Azure Repos'
