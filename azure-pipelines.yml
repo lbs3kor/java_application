@@ -15,12 +15,12 @@ steps:
     git config --global user.name "lbs3kor"
 
     # Clone the Azure DevOps Repo using PAT
-    git clone https://$(uDXSWtVGEJe7T0meK6tvhJsT4YJWLgtJsN6vhM0KsbHB68FQrJw9JQQJ99BDACAAAAAg9ApBAAASAZDO3wJx)@dev.azure.com/lbs3kor/demo5/_git/your-azure-repo azure-repo
+    git clone https://$(uDXSWtVGEJe7T0meK6tvhJsT4YJWLgtJsN6vhM0KsbHB68FQrJw9JQQJ99BDACAAAAAg9ApBAAASAZDO3wJx)@dev.azure.com/lbs3kor/demo5/_git/https://dev.azure.com/lbs3kor/_git/demo5 azure-repo
 
     cd azure-repo
 
     # Pull latest from GitHub
-    git remote add github https://github.com/your-user/your-github-repo.git
+    git remote add github https://github.com/lbs3kor/java_application.git
     git fetch github
     git merge github/main --allow-unrelated-histories -m "Sync from GitHub"
 
