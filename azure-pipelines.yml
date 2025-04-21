@@ -1,32 +1,31 @@
 trigger:
-- main  # or your GitHub branch
+- main
 
 pool:
   vmImage: ubuntu-latest
 
 variables:
-  AZURE_PAT: $(azurePat)  # This will be passed as a secret variable
+  AZURE_PAT: $(azurePat)
+  GITHUB_PAT: $(githubPat)
 
 steps:
-- checkout: self
-
 - script: |
     git config --global user.email "lbs3kor@bosch.com"
     git config --global user.name "lbs3kor"
 
-    # Clone the Azure DevOps Repo using PAT
-    git clone https://$(uDXSWtVGEJe7T0meK6tvhJsT4YJWLgtJsN6vhM0KsbHB68FQrJw9JQQJ99BDACAAAAAg9ApBAAASAZDO3wJx)@dev.azure.com/lbs3kor/demo5/_git/demo5-repo azure-repo
+    # Clone Azure DevOps Repo
+    git clone https://$(AZURE_PAT)@dev.azure.com/lbs3kor/demo5/_git/demo5-repo azure-repo
 
     cd azure-repo
 
-    # Pull latest from GitHub
-    git remote add github https://github.com/lbs3kor/java_application.git
+    # Add GitHub as remote using PAT
+    git remote add github https://$(GITHUB_PAT)@github.com/lbs3kor/java_application.git
     git fetch github
-    
-    # Pull GitHub code
+
+    # Create main branch if not exists
     git checkout -b main
     git pull github main --allow-unrelated-histories
 
-    # Push to Azure DevOps Repo
+    # Push to Azure DevOps
     git push origin main
   displayName: 'Sync GitHub to Azure Repos'
